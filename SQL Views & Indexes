@@ -1,0 +1,10 @@
+CREATE DATABASE IF NOT EXISTS ViewIndexDB;
+USE ViewIndexDB;
+CREATE TABLE Customers(customer_id INT PRIMARY KEY,customer_name VARCHAR(60),city VARCHAR(40),credit_limit DECIMAL(10,2));
+INSERT INTO Customers VALUES (1,'Aarav','Bengaluru',50000),(2,'Diya','Mumbai',75000),(3,'Kabir','Delhi',40000),(4,'Anaya','Bengaluru',90000),(5,'Ishaan','Pune',60000);
+CREATE VIEW Bengaluru_Customers AS SELECT customer_id,customer_name,credit_limit FROM Customers WHERE city='Bengaluru';
+SELECT * FROM Bengaluru_Customers;
+CREATE INDEX idx_customer_city ON Customers(city);
+SELECT * FROM Customers WHERE city='Mumbai';
+-- Optional cleanup: DROP VIEW Bengaluru_Customers;
+-- Optional cleanup: DROP INDEX idx_customer_city ON Customers;
