@@ -1,0 +1,8 @@
+CREATE DATABASE IF NOT EXISTS ConstraintsDB;
+USE ConstraintsDB;
+CREATE TABLE Courses(course_id INT PRIMARY KEY,course_name VARCHAR(60) NOT NULL UNIQUE,duration_months INT CHECK(duration_months>0));
+CREATE TABLE Enrollments(enrollment_id INT PRIMARY KEY,student_name VARCHAR(60) NOT NULL,course_id INT,enrollment_date DATE DEFAULT (CURRENT_DATE),status VARCHAR(20) DEFAULT 'Active',FOREIGN KEY(course_id) REFERENCES Courses(course_id));
+INSERT INTO Courses VALUES (1,'BBA Fintech',36),(2,'BCom',36),(3,'BCA',36),(4,'MBA',24);
+INSERT INTO Enrollments(enrollment_id,student_name,course_id,enrollment_date,status) VALUES (101,'Rhea',1,'2026-01-10','Active'),(102,'Kunal',2,'2026-01-12','Active'),(103,'Sana',1,'2026-01-15','Completed'),(104,'Aman',3,'2026-01-20','Active');
+SELECT e.enrollment_id,e.student_name,c.course_name,e.status FROM Enrollments e JOIN Courses c ON e.course_id=c.course_id;
+SELECT status,COUNT(*) AS student_count FROM Enrollments GROUP BY status;
