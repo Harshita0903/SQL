@@ -1,0 +1,11 @@
+CREATE DATABASE IF NOT EXISTS HotelDB;
+USE HotelDB;
+CREATE TABLE Guests(guest_id INT PRIMARY KEY, guest_name VARCHAR(60), phone VARCHAR(15) UNIQUE);
+CREATE TABLE Rooms(room_id INT PRIMARY KEY, room_type VARCHAR(30), price_per_night DECIMAL(9,2), room_status VARCHAR(20) DEFAULT 'Available');
+CREATE TABLE Bookings(booking_id INT PRIMARY KEY, guest_id INT, room_id INT, check_in DATE, check_out DATE, booking_status VARCHAR(20), FOREIGN KEY(guest_id) REFERENCES Guests(guest_id), FOREIGN KEY(room_id) REFERENCES Rooms(room_id));
+INSERT INTO Guests VALUES (1,'Ishita','9000000001'),(2,'Rahul','9000000002'),(3,'Naina','9000000003');
+INSERT INTO Rooms VALUES (101,'Standard',2500,'Available'),(102,'Deluxe',4000,'Booked'),(103,'Suite',7500,'Available'),(104,'Standard',2500,'Booked');
+INSERT INTO Bookings VALUES (1001,1,102,'2026-04-01','2026-04-04','Confirmed'),(1002,2,104,'2026-04-05','2026-04-07','Confirmed'),(1003,3,103,'2026-04-10','2026-04-12','Pending');
+SELECT b.booking_id,g.guest_name,r.room_type,r.price_per_night,b.check_in,b.check_out FROM Bookings b JOIN Guests g ON b.guest_id=g.guest_id JOIN Rooms r ON b.room_id=r.room_id;
+SELECT * FROM Rooms WHERE room_status='Available';
+SELECT room_type,AVG(price_per_night) AS average_price FROM Rooms GROUP BY room_type;
