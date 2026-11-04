@@ -1,0 +1,12 @@
+CREATE DATABASE IF NOT EXISTS SubqueryDB;
+USE SubqueryDB;
+CREATE TABLE Employees(employee_id INT PRIMARY KEY,employee_name VARCHAR(50),department VARCHAR(30),salary DECIMAL(10,2));
+INSERT INTO Employees VALUES (1,'Asha','Finance',48000),(2,'Ravi','IT',65000),(3,'Mina','HR',42000),(4,'John','IT',72000),(5,'Sara','Finance',56000),(6,'Dev','Marketing',45000);
+-- Employees earning above overall average
+SELECT employee_name,salary FROM Employees WHERE salary>(SELECT AVG(salary) FROM Employees);
+-- Employee(s) earning the maximum salary
+SELECT employee_name,department,salary FROM Employees WHERE salary=(SELECT MAX(salary) FROM Employees);
+-- Employees in departments with more than one employee
+SELECT employee_name,department FROM Employees WHERE department IN (SELECT department FROM Employees GROUP BY department HAVING COUNT(*)>1);
+-- Employees earning above their department average
+SELECT e.employee_name,e.department,e.salary FROM Employees e WHERE e.salary>(SELECT AVG(x.salary) FROM Employees x WHERE x.department=e.department);
