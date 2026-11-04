@@ -1,0 +1,11 @@
+CREATE DATABASE IF NOT EXISTS LibraryDB;
+USE LibraryDB;
+CREATE TABLE Members(member_id INT PRIMARY KEY, member_name VARCHAR(60) NOT NULL, email VARCHAR(80) UNIQUE);
+CREATE TABLE Books(book_id INT PRIMARY KEY, title VARCHAR(100) NOT NULL, author VARCHAR(60), category VARCHAR(30), copies INT DEFAULT 0);
+CREATE TABLE Loans(loan_id INT PRIMARY KEY, member_id INT, book_id INT, issue_date DATE, due_date DATE, return_date DATE, FOREIGN KEY(member_id) REFERENCES Members(member_id), FOREIGN KEY(book_id) REFERENCES Books(book_id));
+INSERT INTO Members VALUES (1,'Aarav','aarav@mail.com'),(2,'Diya','diya@mail.com'),(3,'Kabir','kabir@mail.com');
+INSERT INTO Books VALUES (101,'The Alchemist','Paulo Coelho','Fiction',4),(102,'Atomic Habits','James Clear','Self Help',3),(103,'Wings of Fire','A P J Abdul Kalam','Biography',2),(104,'1984','George Orwell','Fiction',5);
+INSERT INTO Loans VALUES (1,1,101,'2026-01-05','2026-01-19','2026-01-16'),(2,2,102,'2026-01-08','2026-01-22',NULL),(3,3,103,'2026-01-10','2026-01-24','2026-01-23');
+SELECT m.member_name,b.title,l.due_date FROM Loans l JOIN Members m ON l.member_id=m.member_id JOIN Books b ON l.book_id=b.book_id;
+SELECT * FROM Loans WHERE return_date IS NULL;
+SELECT category,COUNT(*) AS book_count FROM Books GROUP BY category;
