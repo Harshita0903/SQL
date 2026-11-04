@@ -1,0 +1,10 @@
+CREATE DATABASE IF NOT EXISTS InventoryDB;
+USE InventoryDB;
+CREATE TABLE Suppliers(supplier_id INT PRIMARY KEY,supplier_name VARCHAR(60),city VARCHAR(40));
+CREATE TABLE Inventory(item_id INT PRIMARY KEY,item_name VARCHAR(60),category VARCHAR(30),quantity INT DEFAULT 0,reorder_level INT DEFAULT 10,unit_cost DECIMAL(9,2),supplier_id INT,FOREIGN KEY(supplier_id) REFERENCES Suppliers(supplier_id));
+INSERT INTO Suppliers VALUES (1,'Tech Source','Bengaluru'),(2,'Office Mart','Mumbai'),(3,'Home Supplies','Pune');
+INSERT INTO Inventory VALUES (101,'Monitor','Electronics',8,10,8500,1),(102,'Mouse','Electronics',45,15,450,1),(103,'Printer Paper','Stationery',6,20,280,2),(104,'Desk Organizer','Stationery',25,8,350,2),(105,'Storage Box','Office',4,10,600,3);
+SELECT i.item_name,i.quantity,i.reorder_level,s.supplier_name FROM Inventory i JOIN Suppliers s ON i.supplier_id=s.supplier_id;
+SELECT * FROM Inventory WHERE quantity<=reorder_level;
+SELECT category,SUM(quantity) AS units,SUM(quantity*unit_cost) AS stock_value FROM Inventory GROUP BY category;
+UPDATE Inventory SET quantity=quantity+20 WHERE item_id=101;
